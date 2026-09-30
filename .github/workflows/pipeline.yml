@@ -24,9 +24,19 @@ jobs:
         with:
           fetch-depth: 0
 
+      # ⚠️ Assim que remover segredos do código, passar pra cá
+      # Obs: não é uma alternativa tão robusta quanto um Vault por exemplo, mas já que o segredo estava em código....
+      # Dicas para cada variável:
+      #   - adicione um env 
+      #   - crie um segredo correspondente no github
+      #   - insira uma referência para encontrá-la no código (exemplo CHAVE = "__CHAVE__")
+      #   - injete a variável na referência, usando um sed 
       - name: 🔐 Inserir Secrets no JavaScript
+        #env:
+          #VAR: ${{ secrets.VAR  }}
         run: |
-          echo "Nenhum segredo a ser inserido no código"
+          echo "Nenhum segredo inserido no código por enquanto"
+      #   sed -i "s|__VAR__|$VAR|g" src/script.js
 
       - name: ⚙️ Build
         run: |
@@ -75,7 +85,7 @@ jobs:
       - name: ✍️ Instalar Cosign
         uses: sigstore/cosign-installer@v3
 
-      # ⚠️ MOCK DE ASSINATURA
+      # ❌ PASSO A IMPLEMENTAR — Assinatura via Cosign
       # Este passo NÃO assina de verdade — ele gera um bundle falso, só para
       # demonstração.
       #
@@ -117,14 +127,14 @@ jobs:
       - name: ✍️ Instalar Cosign
         uses: sigstore/cosign-installer@v3
 
-      # Usa o Cosign para validar assinatura do artefato
-      - name: 🔎 Verificar assinatura do artefato
-        run: |
-          cosign verify-blob artifact.tar \
-            --bundle artifact.sigstore.json \
-            --certificate-identity-regexp "^https://github.com/${{ github.repository }}/.github/workflows/.*" \
-            --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
-          echo "Assinatura válida — artefato íntegro e autêntico."
+      # ⚠️ Usa o Cosign para validar assinatura do artefato - descomentar após assinatura
+      # - name: 🔎 Verificar assinatura do artefato
+      #  run: |
+      #    cosign verify-blob artifact.tar \
+      #      --bundle artifact.sigstore.json \
+      #      --certificate-identity-regexp "^https://github.com/${{ github.repository }}/.github/workflows/.*" \
+      #      --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+      #    echo "Assinatura válida — artefato íntegro e autêntico."
 
       # Descompacta o site para publicar
       - name: 📂 Extrair site verificado
