@@ -46,7 +46,7 @@ jobs:
 
       # ❌ PASSO A IMPLEMENTAR — Secrets Scanning com Gitleaks
       # Dica: use a action oficial "gitleaks/gitleaks-action@v2" e passe o
-        - name: 🔑 Secrets Scanning
+      - name: 🔑 Secrets Scanning
         uses: gitleaks/gitleaks-action@v3
         env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -54,7 +54,7 @@ jobs:
       # ❌ PASSO A IMPLEMENTAR — SAST com Semgrep
       # Dica: instale com "pip install semgrep" e rode
       #   semgrep scan --config auto --config p/xss --error src/
-        - name: 🔍 SAST - Semgrep
+      - name: 🔍 SAST - Semgrep
         run: |
         python -m pip install semgrep
         semgrep scan \
@@ -70,7 +70,7 @@ jobs:
       #   curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
       # E rode:
       #   grype dir:. --fail-on medium
-         - name: 📦 SCA - Grype
+      - name: 📦 SCA - Grype
         run: |
         npm install --package-lock-only --no-audit --no-fund
 
@@ -110,7 +110,7 @@ jobs:
       #
       # Dica da assinatura real:
       #   cosign sign-blob artifact.tar --bundle artifact.sigstore.json --yes
-        - name: ✍️ Assinar artefato
+      - name: ✍️ Assinar artefato
         run: |
         cosign sign-blob artifact.tar \
           --bundle artifact.sigstore.json \
@@ -147,7 +147,7 @@ jobs:
         uses: sigstore/cosign-installer@v3
 
       # ⚠️ Usa o Cosign para validar assinatura do artefato - descomentar após assinatura
-       - name: 🔎 Verificar assinatura do artefato
+      - name: 🔎 Verificar assinatura do artefato
         run: |
         cosign verify-blob artifact.tar \
           --bundle artifact.sigstore.json \
