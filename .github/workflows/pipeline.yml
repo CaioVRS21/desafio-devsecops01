@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - main
+      - develop
+      - 'feat/**'
+      - 'hotfix/**'
+      - 'fix/**'
 
 permissions:
   contents: read
@@ -130,30 +134,31 @@ jobs:
   # JOB 2 — Verifica a assinatura e só então faz o deploy
   # ────────────────────────────────────────────────────────────────
   deploy:
-    name: Verificação e Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  if: github.ref == 'refs/heads/main'
+  name: Verificação e Deploy
+  needs: build
+  runs-on: ubuntu-latest
+  environment:
+    name: github-pages
+    url: ${{ steps.deployment.outputs.page_url }}
 
-    steps:
-      - name: ⬇️ Baixar o artefato assinado
-        uses: actions/download-artifact@v4
-        with:
-          name: site-assinado
+  steps:
+    - name: ⬇️ Baixar o artefato assinado
+      uses: actions/download-artifact@v4
+      with:
+        name: site-assinado
 
-      - name: ✍️ Instalar Cosign
-        uses: sigstore/cosign-installer@v3
+    - name: ✍️ Instalar Cosign
+      uses: sigstore/cosign-installer@v3
 
       # ⚠️ Usa o Cosign para validar assinatura do artefato - descomentar após assinatura
-      - name: 🔎 Verificar assinatura do artefato
-        run: |
-        cosign verify-blob artifact.tar \
-          --bundle artifact.sigstore.json \
-          --certificate-identity-regexp "^https://github.com/${{ github.repository }}/.github/workflows/.*" \
-          --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
-        echo "Assinatura válida — artefato íntegro e autêntico."
+    - name: 🔎 Verificar assinatura do artefato
+      run: |
+      cosign verify-blob artifact.tar \
+         --bundle artifact.sigstore.json \
+        --certificate-identity-regexp "^https://github.com/${{ github.repository }}/.github/workflows/.*" \
+        --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
+      echo "Assinatura válida — artefato íntegro e autêntico."
 
       # Descompacta o site para publicar
       - name: 📂 Extrair site verificado
