@@ -103,11 +103,7 @@ jobs:
         uses: actions/download-artifact@v4.1.3
         with:
           name: site-assinado
-          path: |
-            artifact.tar
-            artifact.sigstore.json
-            artifact.tar.sha256
-          retention-days: 1
+          path: .
 
   # ────────────────────────────────────────────────────────────────
   # JOB 2 — Verifica a assinatura e faz o deploy
