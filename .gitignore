@@ -1,0 +1,14 @@
+
+# Dependências Node.js
+node_modules/
+
+# Variáveis de ambiente e possíveis segredos
+.env
+.env.*
+
+# Permite manter um exemplo de configuração
+!.env.example
+
+# Arquivos gerados
+dist/
+coverage/
