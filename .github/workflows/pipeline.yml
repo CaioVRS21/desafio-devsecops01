@@ -76,19 +76,16 @@ jobs:
       #   curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
       # E rode:
       #   grype dir:. --fail-on medium
+      
       - name: 📦 SCA - Grype
         run: |
-         npm install --package-lock-only --no-audit --no-fund
-
+          npm install --package-lock-only --no-audit --no-fund
           mkdir -p "$HOME/.local/bin"
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh \
+            | sh -s -- -b "$HOME/.local/bin"
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+          grype dir:. --fail-on medium
 
-         curl -sSfL \
-         https://raw.githubusercontent.com/anchore/grype/main/install.sh \
-           | sh -s -- -b "$HOME/.local/bin"
-
-         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-
-         grype dir:. --fail-on medium
 
       # ── Empacota o site em um artefato tar (formato que o Pages consome)
       - name: 📦 Empacotar artefato do site
