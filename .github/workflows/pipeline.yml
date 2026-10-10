@@ -62,10 +62,10 @@ jobs:
         run: |
         python -m pip install semgrep
         semgrep scan \
-          --config auto \
-          --config p/xss \
-          --error \
-          src/
+        --config auto \
+        --config p/xss \
+        --error \
+        src/
 
       # ❌ PASSO A IMPLEMENTAR — SCA com Grype
       # Dica: primeiro, gere o package-lock pelo npm:
@@ -81,7 +81,7 @@ jobs:
         mkdir -p "$HOME/.local/bin"
 
         curl -sSfL \
-          https://raw.githubusercontent.com/anchore/grype/main/install.sh \
+        https://raw.githubusercontent.com/anchore/grype/main/install.sh \
           | sh -s -- -b "$HOME/.local/bin"
 
         echo "$HOME/.local/bin" >> "$GITHUB_PATH"
@@ -91,19 +91,19 @@ jobs:
       # ── Empacota o site em um artefato tar (formato que o Pages consome)
       - name: 📦 Empacotar artefato do site
         run: |
-          tar \
-            --dereference --hard-dereference \
-            -C src \
-            -cvf artifact.tar \
-            --exclude=.git --exclude=.github \
+        tar \
+        --dereference --hard-dereference \
+        -C src \
+        -cvf artifact.tar \
+        --exclude=.git --exclude=.github \
             .
 
       # ── Calcula o hash do artefato
       - name: 🔢 Hash do artefato
         run: |
-          digest=$(sha256sum artifact.tar | awk '{print $1}')
-          echo "$digest" > artifact.tar.sha256
-          echo "SHA256: $digest"
+        digest=$(sha256sum artifact.tar | awk '{print $1}')
+        echo "$digest" > artifact.tar.sha256
+        echo "SHA256: $digest"
 
       - name: ✍️ Instalar Cosign
         uses: sigstore/cosign-installer@v3
@@ -117,8 +117,8 @@ jobs:
       - name: ✍️ Assinar artefato
         run: |
         cosign sign-blob artifact.tar \
-          --bundle artifact.sigstore.json \
-          --yes
+        --bundle artifact.sigstore.json \
+        --yes
       # ── Publica o artefato + bundle de assinatura para o próximo job
       - name: ⬆️ Upload do artefato assinado
         uses: actions/upload-artifact@v4
