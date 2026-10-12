@@ -11,7 +11,7 @@ fetch('db.json')
     document.getElementById('db-status').textContent = data.status;
 
     const list = document.getElementById('task-list');
-    list.replaceChildren();
+    list.appendChild();
 
     data.itens.forEach(item => {
       const li = document.createElement('li');
