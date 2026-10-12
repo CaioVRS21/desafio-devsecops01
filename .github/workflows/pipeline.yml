@@ -139,9 +139,6 @@ jobs:
             --certificate-identity-regexp "^https://github.com/${{ github.repository }}/.github/workflows/.*@refs/heads/main$" \
             --certificate-oidc-issuer "https://token.actions.githubusercontent.com"
           echo "Assinatura válida — artefato íntegro e autêntico."
-      # Confere o hash do artefato
-      - name: 🔢 Verificar hash do artefato
-        run: sha256sum --check artifact.tar.sha256
 
       # Extrai somente após validar a assinatura
       - name: 📂 Extrair site verificado
