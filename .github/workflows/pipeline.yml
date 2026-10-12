@@ -28,7 +28,7 @@ jobs:
       - name: 📥 Checkout do Código
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 5
 
       # Não injete segredos diretamente no JavaScript do frontend.
       # Variáveis incorporadas ao bundle podem ser visualizadas pelos usuários.
