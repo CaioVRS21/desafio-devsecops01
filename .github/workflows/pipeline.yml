@@ -45,8 +45,6 @@ jobs:
       # Secrets Scanning com Gitleaks
       - name: 🔑 Secrets Scanning
         uses: gitleaks/gitleaks-action@v3
-        with:
-          args: detect --no-git -v 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
