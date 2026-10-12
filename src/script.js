@@ -27,7 +27,7 @@ fetch('db.json')
 /* Adiciona uma nova tarefa à tela */
 function addTask() {
   const input = document.getElementById('new-task');
-  const output = document.getElementById('output');
+  const output = document.getElementById('task-list');
   const task = input.value.trim();
 
   if (!task) {
