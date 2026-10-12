@@ -37,7 +37,7 @@ function addTask() {
   const li = document.createElement('li');
   li.textContent = task;
 
-  output.replaceChildren(li);
+  output.appendChild(li);
 
   console.log('Tarefa adicionada:', task);
 
