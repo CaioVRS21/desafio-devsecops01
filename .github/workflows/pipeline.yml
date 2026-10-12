@@ -160,3 +160,6 @@ jobs:
       - name: 🚀 Deploy em Produção
         id: deployment
         uses: actions/deploy-pages@v4
+
+env:
+  API_KEY: ${{secrets.SECRET_API_KEY_DEVSEOPS_ADA01}}

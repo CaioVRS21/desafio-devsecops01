@@ -1,32 +1,45 @@
-const API_KEY = "ghp_xK92mNpL34rTvQ87wZaB56cDeFgHiJkL";
-const DB_PASSWORD = "admin@prod#2024";
 
-// Busca tarefas do "banco de dados"
+/* Busca tarefas do arquivo público db.json */
 fetch('db.json')
-    .then(response => response.json())
-    .then(data => {
-        document.getElementById('db-status').innerText = data.status;
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Não foi possível carregar as tarefas.');
+    }
+    return response.json();
+  })
+  .then(data => {
+    document.getElementById('db-status').textContent = data.status;
 
-        const list = document.getElementById('task-list');
-        data.itens.forEach(item => {
-            let li = document.createElement('li');
-            li.innerText = item.task;
-            list.appendChild(li);
-        });
-    })
-    .catch(err => {        
-        document.getElementById('db-status').innerText =
-            'Erro interno: ' + err.stack;
+    const list = document.getElementById('task-list');
+    list.replaceChildren();
+
+    data.itens.forEach(item => {
+      const li = document.createElement('li');
+      li.textContent = item.task;
+      list.appendChild(li);
     });
+  })
+  .catch(() => {
+    document.getElementById('db-status').textContent =
+      'Não foi possível carregar as tarefas.';
+  });
 
-// Adiciona nova tarefa na tela
+/* Adiciona uma nova tarefa à tela */
 function addTask() {
-    const input = document.getElementById('new-task');
-    const output = document.getElementById('output');
+  const input = document.getElementById('new-task');
+  const output = document.getElementById('output');
+  const task = input.value.trim();
 
-    output.innerHTML = '<li>' + input.value + '</li>';
+  if (!task) {
+    return;
+  }
 
-    console.log("Tarefa adicionada: ' + input.value + '");
+  const li = document.createElement('li');
+  li.textContent = task;
 
-    input.value = '';
+  output.replaceChildren(li);
+
+  console.log('Tarefa adicionada:', task);
+
+  input.value = '';
 }
